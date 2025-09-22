@@ -69,9 +69,49 @@
             .error-message {
                 color: #EF4444;
             }
-            /* 移动端连接线样式 */
-            .mobile-connector {
-                @apply w-0.5 bg-primary/20 mx-auto my-8;
+            /* 流程步骤连接线样式 */
+            .process-connector {
+                @apply w-0.5 bg-primary/20 my-8;
+            }
+            /* 步骤卡片悬停效果 */
+            .step-card {
+                @apply transition-all duration-300 hover:shadow-hover hover:-translate-y-1;
+            }
+            /* 移动端步骤样式优化 - 调整为标号+标题+内容排序 */
+            @media (max-width: 767px) {
+                /* 步骤容器 */
+                .process-step {
+                    @apply flex flex-col w-full mb-16 last:mb-0;
+                }
+                /* 移动端步骤头部：标号+标题组合 */
+                .step-header {
+                    @apply flex items-center gap-4 mb-4;
+                }
+                /* 序号容器 */
+                .step-number-container {
+                    @apply w-12 h-12 flex items-center justify-center flex-shrink-0;
+                }
+                /* 标题区域 */
+                .step-title-container {
+                    @apply flex-1;
+                }
+                .step-title {
+                    @apply text-xl font-bold text-primary mb-1;
+                }
+                .step-description {
+                    @apply text-gray-500 text-sm;
+                }
+                /* 内容卡片 */
+                .step-content {
+                    @apply w-full mt-2 pl-[4rem]; /* 缩进与标号对齐 */
+                }
+                .step-content-card {
+                    @apply w-full p-5 rounded-xl shadow-card;
+                }
+                /* 连接线 */
+                .mobile-connector {
+                    @apply w-full h-0.5 bg-primary/20 my-6;
+                }
             }
         }
     </style>
@@ -542,7 +582,7 @@
         </div>
     </section>
 
-    <!-- 项目流程 -->
+    <!-- 项目流程 - 修复移动端显示两个标题的问题，保持PC样式不变 -->
     <section id="process" class="py-20 bg-light">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center max-w-3xl mx-auto mb-16">
@@ -550,184 +590,261 @@
                 <p class="text-gray-500 text-lg">我们拥有标准化的项目管理流程，确保每一个项目高效、高质量完成</p>
             </div>
             
-            <div class="relative">
-                <!-- 连接线 - 仅桌面显示 -->
-                <div class="hidden md:block absolute left-1/2 top-0 bottom-0 w-1 bg-primary/20 transform -translate-x-1/2"></div>
+            <div class="relative max-w-5xl mx-auto">
+                <!-- 桌面端连接线 -->
+                <div class="hidden md:block absolute left-1/2 top-12 bottom-12 w-1 bg-primary/20 transform -translate-x-1/2"></div>
                 
-                <div class="space-y-12 md:space-y-0 relative">
+                <div class="space-y-16 relative">
                     <!-- 流程步骤 1 -->
-                    <div class="md:flex items-center justify-between">
-                        <!-- 步骤标题 - 移动端居左 -->
-                        <div class="md:w-5/12 md:text-right mb-4 md:mb-0 text-left">
-                            <h3 class="text-xl font-bold mb-2">需求沟通</h3>
+                    <div class="process-step md:flex md:items-center md:justify-between">
+                        <!-- PC端左侧标题：只在PC端显示 -->
+                        <div class="hidden md:block md:w-5/12 md:text-right">
+                            <h3 class="text-xl font-bold text-primary mb-1">需求沟通</h3>
                             <p class="text-gray-500">深入了解您的业务需求和目标，进行需求分析和可行性评估</p>
                         </div>
                         
-                        <!-- 步骤编号 -->
-                        <div class="md:w-2/12 flex justify-center my-4 md:my-0">
-                            <div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center font-bold relative z-10 shadow-md">
+                        <!-- 移动端标题和标号：只在移动端显示 -->
+                        <div class="md:hidden step-header">
+                            <div class="step-number-container">
+                                <div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center font-bold relative z-10 shadow-lg border-4 border-light">
+                                    1
+                                </div>
+                            </div>
+                            <div class="step-title-container">
+                                <h3 class="step-title">需求沟通</h3>
+                                <p class="step-description">深入了解您的业务需求和目标，进行需求分析和可行性评估</p>
+                            </div>
+                        </div>
+                        
+                        <!-- 桌面端序号 -->
+                        <div class="hidden md:flex md:w-2/12 justify-center">
+                            <div class="w-16 h-16 rounded-full bg-primary text-white flex items-center justify-center font-bold relative z-10 shadow-lg border-4 border-light">
                                 1
                             </div>
                         </div>
                         
                         <!-- 步骤内容 -->
-                        <div class="md:w-5/12">
-                            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                                <ul class="space-y-2 text-gray-500">
+                        <div class="step-content md:w-5/12">
+                            <div class="bg-white step-content-card step-card border-l-4 border-primary">
+                                <ul class="space-y-3 text-gray-500">
                                     <li class="flex items-start">
-                                        <i class="fa fa-check-circle text-secondary mt-1 mr-2"></i>
+                                        <i class="fa fa-check-circle text-secondary mt-1 mr-3 text-lg"></i>
                                         <span>业务目标与需求收集</span>
                                     </li>
                                     <li class="flex items-start">
-                                        <i class="fa fa-check-circle text-secondary mt-1 mr-2"></i>
+                                        <i class="fa fa-check-circle text-secondary mt-1 mr-3 text-lg"></i>
                                         <span>竞品分析与市场调研</span>
                                     </li>
                                     <li class="flex items-start">
-                                        <i class="fa fa-check-circle text-secondary mt-1 mr-2"></i>
+                                        <i class="fa fa-check-circle text-secondary mt-1 mr-3 text-lg"></i>
                                         <span>初步方案与技术评估</span>
                                     </li>
                                 </ul>
                             </div>
                         </div>
+                        
+                        <!-- 移动端连接线 -->
+                        <div class="mobile-connector md:hidden"></div>
                     </div>
                     
-                    <!-- 移动端连接线 -->
-                    <div class="mobile-connector md:hidden"></div>
-                    
                     <!-- 流程步骤 2 -->
-                    <div class="md:flex items-center justify-between">
-                        <div class="md:w-5/12 md:text-right mb-4 md:mb-0 md:order-1">
-                            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                                <ul class="space-y-2 text-gray-500">
+                    <div class="process-step md:flex md:items-center md:justify-between">
+                        <!-- PC端左侧标题：只在PC端显示 -->
+                        <div class="hidden md:block md:w-5/12">
+                            <h3 class="text-xl font-bold text-primary mb-1">方案设计</h3>
+                            <p class="text-gray-500">基于需求分析，提供详细的项目规划、实施方案和资源配置</p>
+                        </div>
+                        
+                        <!-- 移动端标题和标号：只在移动端显示 -->
+                        <div class="md:hidden step-header">
+                            <div class="step-number-container">
+                                <div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center font-bold relative z-10 shadow-lg border-4 border-light">
+                                    2
+                                </div>
+                            </div>
+                            <div class="step-title-container">
+                                <h3 class="step-title">方案设计</h3>
+                                <p class="step-description">基于需求分析，提供详细的项目规划、实施方案和资源配置</p>
+                            </div>
+                        </div>
+                        
+                        <!-- 桌面端序号 -->
+                        <div class="hidden md:flex md:w-2/12 justify-center">
+                            <div class="w-16 h-16 rounded-full bg-primary text-white flex items-center justify-center font-bold relative z-10 shadow-lg border-4 border-light">
+                                2
+                            </div>
+                        </div>
+                        
+                        <!-- 步骤内容 -->
+                        <div class="step-content md:w-5/12 md:text-right">
+                            <div class="bg-white step-content-card step-card border-r-4 border-primary">
+                                <ul class="space-y-3 text-gray-500">
                                     <li class="flex items-start md:justify-end md:flex-row-reverse">
-                                        <i class="fa fa-check-circle text-secondary mt-1 ml-2 md:ml-0 md:mr-2"></i>
+                                        <i class="fa fa-check-circle text-secondary mt-1 ml-3 md:ml-0 md:mr-3 text-lg"></i>
                                         <span>项目规划与设计</span>
                                     </li>
                                     <li class="flex items-start md:justify-end md:flex-row-reverse">
-                                        <i class="fa fa-check-circle text-secondary mt-1 ml-2 md:ml-0 md:mr-2"></i>
+                                        <i class="fa fa-check-circle text-secondary mt-1 ml-3 md:ml-0 md:mr-3 text-lg"></i>
                                         <span>资源配置方案</span>
                                     </li>
                                     <li class="flex items-start md:justify-end md:flex-row-reverse">
-                                        <i class="fa fa-check-circle text-secondary mt-1 ml-2 md:ml-0 md:mr-2"></i>
+                                        <i class="fa fa-check-circle text-secondary mt-1 ml-3 md:ml-0 md:mr-3 text-lg"></i>
                                         <span>时间节点与预算规划</span>
                                     </li>
                                 </ul>
                             </div>
                         </div>
                         
-                        <div class="md:w-2/12 flex justify-center my-4 md:my-0">
-                            <div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center font-bold relative z-10 shadow-md">
-                                2
-                            </div>
-                        </div>
-                        
-                        <div class="md:w-5/12 md:order-0 text-left">
-                            <h3 class="text-xl font-bold mb-2">方案设计</h3>
-                            <p class="text-gray-500">基于需求分析，提供详细的项目规划、实施方案和资源配置</p>
-                        </div>
+                        <!-- 移动端连接线 -->
+                        <div class="mobile-connector md:hidden"></div>
                     </div>
                     
-                    <!-- 移动端连接线 -->
-                    <div class="mobile-connector md:hidden"></div>
-                    
                     <!-- 流程步骤 3 -->
-                    <div class="md:flex items-center justify-between">
-                        <div class="md:w-5/12 md:text-right mb-4 md:mb-0 text-left">
-                            <h3 class="text-xl font-bold mb-2">项目实施</h3>
+                    <div class="process-step md:flex md:items-center md:justify-between">
+                        <!-- PC端左侧标题：只在PC端显示 -->
+                        <div class="hidden md:block md:w-5/12 md:text-right">
+                            <h3 class="text-xl font-bold text-primary mb-1">项目实施</h3>
                             <p class="text-gray-500">按照设计方案进行项目实施，采用科学管理模式确保质量与进度</p>
                         </div>
                         
-                        <div class="md:w-2/12 flex justify-center my-4 md:my-0">
-                            <div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center font-bold relative z-10 shadow-md">
+                        <!-- 移动端标题和标号：只在移动端显示 -->
+                        <div class="md:hidden step-header">
+                            <div class="step-number-container">
+                                <div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center font-bold relative z-10 shadow-lg border-4 border-light">
+                                    3
+                                </div>
+                            </div>
+                            <div class="step-title-container">
+                                <h3 class="step-title">项目实施</h3>
+                                <p class="step-description">按照设计方案进行项目实施，采用科学管理模式确保质量与进度</p>
+                            </div>
+                        </div>
+                        
+                        <!-- 桌面端序号 -->
+                        <div class="hidden md:flex md:w-2/12 justify-center">
+                            <div class="w-16 h-16 rounded-full bg-primary text-white flex items-center justify-center font-bold relative z-10 shadow-lg border-4 border-light">
                                 3
                             </div>
                         </div>
                         
-                        <div class="md:w-5/12">
-                            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                                <ul class="space-y-2 text-gray-500">
+                        <!-- 步骤内容 -->
+                        <div class="step-content md:w-5/12">
+                            <div class="bg-white step-content-card step-card border-l-4 border-primary">
+                                <ul class="space-y-3 text-gray-500">
                                     <li class="flex items-start">
-                                        <i class="fa fa-check-circle text-secondary mt-1 mr-2"></i>
+                                        <i class="fa fa-check-circle text-secondary mt-1 mr-3 text-lg"></i>
                                         <span>项目团队组建与培训</span>
                                     </li>
                                     <li class="flex items-start">
-                                        <i class="fa fa-check-circle text-secondary mt-1 mr-2"></i>
+                                        <i class="fa fa-check-circle text-secondary mt-1 mr-3 text-lg"></i>
                                         <span>分阶段实施与监控</span>
                                     </li>
                                     <li class="flex items-start">
-                                        <i class="fa fa-check-circle text-secondary mt-1 mr-2"></i>
+                                        <i class="fa fa-check-circle text-secondary mt-1 mr-3 text-lg"></i>
                                         <span>定期进度汇报与沟通</span>
                                     </li>
                                 </ul>
                             </div>
                         </div>
+                        
+                        <!-- 移动端连接线 -->
+                        <div class="mobile-connector md:hidden"></div>
                     </div>
                     
-                    <!-- 移动端连接线 -->
-                    <div class="mobile-connector md:hidden"></div>
-                    
                     <!-- 流程步骤 4 -->
-                    <div class="md:flex items-center justify-between">
-                        <div class="md:w-5/12 md:text-right mb-4 md:mb-0 md:order-1">
-                            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                                <ul class="space-y-2 text-gray-500">
+                    <div class="process-step md:flex md:items-center md:justify-between">
+                        <!-- PC端左侧标题：只在PC端显示 -->
+                        <div class="hidden md:block md:w-5/12">
+                            <h3 class="text-xl font-bold text-primary mb-1">验收交付</h3>
+                            <p class="text-gray-500">进行全面评估与测试，邀请客户参与验收，确保符合预期目标</p>
+                        </div>
+                        
+                        <!-- 移动端标题和标号：只在移动端显示 -->
+                        <div class="md:hidden step-header">
+                            <div class="step-number-container">
+                                <div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center font-bold relative z-10 shadow-lg border-4 border-light">
+                                    4
+                                </div>
+                            </div>
+                            <div class="step-title-container">
+                                <h3 class="step-title">验收交付</h3>
+                                <p class="step-description">进行全面评估与测试，邀请客户参与验收，确保符合预期目标</p>
+                            </div>
+                        </div>
+                        
+                        <!-- 桌面端序号 -->
+                        <div class="hidden md:flex md:w-2/12 justify-center">
+                            <div class="w-16 h-16 rounded-full bg-primary text-white flex items-center justify-center font-bold relative z-10 shadow-lg border-4 border-light">
+                                4
+                            </div>
+                        </div>
+                        
+                        <!-- 步骤内容 -->
+                        <div class="step-content md:w-5/12 md:text-right">
+                            <div class="bg-white step-content-card step-card border-r-4 border-primary">
+                                <ul class="space-y-3 text-gray-500">
                                     <li class="flex items-start md:justify-end md:flex-row-reverse">
-                                        <i class="fa fa-check-circle text-secondary mt-1 ml-2 md:ml-0 md:mr-2"></i>
+                                        <i class="fa fa-check-circle text-secondary mt-1 ml-3 md:ml-0 md:mr-3 text-lg"></i>
                                         <span>项目成果评估</span>
                                     </li>
                                     <li class="flex items-start md:justify-end md:flex-row-reverse">
-                                        <i class="fa fa-check-circle text-secondary mt-1 ml-2 md:ml-0 md:mr-2"></i>
+                                        <i class="fa fa-check-circle text-secondary mt-1 ml-3 md:ml-0 md:mr-3 text-lg"></i>
                                         <span>客户验收与反馈</span>
                                     </li>
                                     <li class="flex items-start md:justify-end md:flex-row-reverse">
-                                        <i class="fa fa-check-circle text-secondary mt-1 ml-2 md:ml-0 md:mr-2"></i>
+                                        <i class="fa fa-check-circle text-secondary mt-1 ml-3 md:ml-0 md:mr-3 text-lg"></i>
                                         <span>问题整改与完善</span>
                                     </li>
                                 </ul>
                             </div>
                         </div>
                         
-                        <div class="md:w-2/12 flex justify-center my-4 md:my-0">
-                            <div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center font-bold relative z-10 shadow-md">
-                                4
-                            </div>
-                        </div>
-                        
-                        <div class="md:w-5/12 md:order-0 text-left">
-                            <h3 class="text-xl font-bold mb-2">验收交付</h3>
-                            <p class="text-gray-500">进行全面评估与测试，邀请客户参与验收，确保符合预期目标</p>
-                        </div>
+                        <!-- 移动端连接线 -->
+                        <div class="mobile-connector md:hidden"></div>
                     </div>
                     
-                    <!-- 移动端连接线 -->
-                    <div class="mobile-connector md:hidden"></div>
-                    
                     <!-- 流程步骤 5 -->
-                    <div class="md:flex items-center justify-between">
-                        <div class="md:w-5/12 md:text-right mb-4 md:mb-0 text-left">
-                            <h3 class="text-xl font-bold mb-2">运营支持</h3>
+                    <div class="process-step md:flex md:items-center md:justify-between">
+                        <!-- PC端左侧标题：只在PC端显示 -->
+                        <div class="hidden md:block md:w-5/12 md:text-right">
+                            <h3 class="text-xl font-bold text-primary mb-1">运营支持</h3>
                             <p class="text-gray-500">项目交付后提供持续运营支持与优化服务，确保长期稳定运行</p>
                         </div>
                         
-                        <div class="md:w-2/12 flex justify-center my-4 md:my-0">
-                            <div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center font-bold relative z-10 shadow-md">
+                        <!-- 移动端标题和标号：只在移动端显示 -->
+                        <div class="md:hidden step-header">
+                            <div class="step-number-container">
+                                <div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center font-bold relative z-10 shadow-lg border-4 border-light">
+                                    5
+                                </div>
+                            </div>
+                            <div class="step-title-container">
+                                <h3 class="step-title">运营支持</h3>
+                                <p class="step-description">项目交付后提供持续运营支持与优化服务，确保长期稳定运行</p>
+                            </div>
+                        </div>
+                        
+                        <!-- 桌面端序号 -->
+                        <div class="hidden md:flex md:w-2/12 justify-center">
+                            <div class="w-16 h-16 rounded-full bg-primary text-white flex items-center justify-center font-bold relative z-10 shadow-lg border-4 border-light">
                                 5
                             </div>
                         </div>
                         
-                        <div class="md:w-5/12">
-                            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                                <ul class="space-y-2 text-gray-500">
+                        <!-- 步骤内容 -->
+                        <div class="step-content md:w-5/12">
+                            <div class="bg-white step-content-card step-card border-l-4 border-primary">
+                                <ul class="space-y-3 text-gray-500">
                                     <li class="flex items-start">
-                                        <i class="fa fa-check-circle text-secondary mt-1 mr-2"></i>
+                                        <i class="fa fa-check-circle text-secondary mt-1 mr-3 text-lg"></i>
                                         <span>运营团队培训</span>
                                     </li>
                                     <li class="flex items-start">
-                                        <i class="fa fa-check-circle text-secondary mt-1 mr-2"></i>
+                                        <i class="fa fa-check-circle text-secondary mt-1 mr-3 text-lg"></i>
                                         <span>技术支持与维护</span>
                                     </li>
                                     <li class="flex items-start">
-                                        <i class="fa fa-check-circle text-secondary mt-1 mr-2"></i>
+                                        <i class="fa fa-check-circle text-secondary mt-1 mr-3 text-lg"></i>
                                         <span>持续优化与升级</span>
                                     </li>
                                 </ul>
@@ -1488,3 +1605,4 @@
         });
     </script>
     </body></html>
+    
